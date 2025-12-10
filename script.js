@@ -1,9 +1,13 @@
-// Import the functions you need from the SDKs you need
+// Import Firebase functions
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { 
+    getDatabase, 
+    ref, 
+    push, 
+    onChildAdded 
+} from "firebase/database";
 
-// Your web app's Firebase configuration
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyA1U8sgAzawiseWeOQ-OjkglaqWzpBJYLQ",
   authDomain: "simple-messaging-app-3c49a.firebaseapp.com",
@@ -15,25 +19,21 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
 
-// 2. Initialize Firebase
-//const app = initializeApp(firebaseConfig);
-//const db = firebase.database();
-
-// 3. Get page elements
+// Page elements
 const messagesDiv = document.getElementById("messages");
 const messageInput = document.getElementById("messageInput");
 const usernameInput = document.getElementById("username");
 
-// 4. Send a message
+// Send message
 function sendMessage() {
     const text = messageInput.value.trim();
     const user = usernameInput.value.trim() || "Anonymous";
 
     if (text === "") return;
 
-    // Push to Firebase database under "messages"
-    db.ref("messages").push({
+    push(ref(db, "messages"), {
         user: user,
         text: text,
         time: Date.now()
@@ -42,8 +42,8 @@ function sendMessage() {
     messageInput.value = "";
 }
 
-// 5. Listen for new messages
-db.ref("messages").on("child_added", snapshot => {
+// Listen for new messages
+onChildAdded(ref(db, "messages"), snapshot => {
     const msg = snapshot.val();
 
     const div = document.createElement("div");
@@ -51,7 +51,5 @@ db.ref("messages").on("child_added", snapshot => {
     div.textContent = `[${msg.user}] ${msg.text}`;
 
     messagesDiv.appendChild(div);
-
-    // Auto scroll
     messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
