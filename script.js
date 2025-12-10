@@ -10,7 +10,7 @@ const firebaseConfig = {
 };
 
 // 2. Initialize Firebase
-const app = firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 const db = firebase.database();
 
 // 3. Get page elements
