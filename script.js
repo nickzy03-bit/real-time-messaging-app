@@ -1,4 +1,8 @@
-// 1. Your Firebase config
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyA1U8sgAzawiseWeOQ-OjkglaqWzpBJYLQ",
@@ -9,9 +13,12 @@ const firebaseConfig = {
   appId: "1:389788910414:web:a90f0081325f629745d41f"
 };
 
-// 2. Initialize Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = firebase.database();
+
+// 2. Initialize Firebase
+//const app = initializeApp(firebaseConfig);
+//const db = firebase.database();
 
 // 3. Get page elements
 const messagesDiv = document.getElementById("messages");
