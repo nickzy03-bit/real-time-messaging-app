@@ -1,12 +1,12 @@
 // 1. Your Firebase config
+// Your web app's Firebase configuration
 const firebaseConfig = {
-    apiKey: "YOUR KEY",
-    authDomain: "YOUR DOMAIN",
-    databaseURL: "YOUR DATABASE URL",
-    projectId: "YOUR PROJECT ID",
-    storageBucket: "YOUR STORAGE BUCKET",
-    messagingSenderId: "YOUR ID",
-    appId: "YOUR APP ID"
+  apiKey: "AIzaSyA1U8sgAzawiseWeOQ-OjkglaqWzpBJYLQ",
+  authDomain: "simple-messaging-app-3c49a.firebaseapp.com",
+  projectId: "simple-messaging-app-3c49a",
+  storageBucket: "simple-messaging-app-3c49a.firebasestorage.app",
+  messagingSenderId: "389788910414",
+  appId: "1:389788910414:web:a90f0081325f629745d41f"
 };
 
 // 2. Initialize Firebase
