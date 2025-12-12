@@ -1,6 +1,11 @@
-// Import Firebase modules
+// Import Firebase functions from CDN
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
+import {
+    getDatabase,
+    ref,
+    push,
+    onChildAdded
+} from "https://www.gstatic.com/firebasejs/9.22.2/firebase-database.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -12,34 +17,43 @@ const firebaseConfig = {
   appId: "1:389788910414:web:a90f0081325f629745d41f"
 };
 
-// 🔹 Initialize Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
-// 🔹 Send message function
-function sendMessage() {
-  const username = document.getElementById("username").value;
-  const message = document.getElementById("messageInput").value;
+// Page elements
+const messagesDiv = document.getElementById("messages");
+const messageInput = document.getElementById("messageInput");
+const usernameInput = document.getElementById("username");
+const sendButton = document.querySelector("button"); // Get the button
 
-  if (username && message) {
+// Send message
+function sendMessage() {
+    const text = messageInput.value.trim();
+    const user = usernameInput.value.trim() || "Anonymous";
+
+    if (text === "") return;
+
     push(ref(db, "messages"), {
-      username,
-      message,
-      timestamp: Date.now()
+        user: user,
+        text: text,
+        time: Date.now()
     });
 
-    document.getElementById("messageInput").value = ""; // clear input
-  }
+    messageInput.value = "";
 }
 
-// 🔹 Listen for new messages
-const messagesRef = ref(db, "messages");
-onChildAdded(messagesRef, (snapshot) => {
-  const data = snapshot.val();
-  const msgDiv = document.createElement("div");
-  msgDiv.textContent = `${data.username}: ${data.message}`;
-  document.getElementById("messages").appendChild(msgDiv);
-});
+// Attach event listener to the send button
+sendButton.addEventListener("click", sendMessage);
 
-// 🔹 Attach event listener to button
-document.getElementById("sendBtn").addEventListener("click", sendMessage);
+// Listen for new messages
+onChildAdded(ref(db, "messages"), snapshot => {
+    const msg = snapshot.val();
+
+    const div = document.createElement("div");
+    div.className = "message";
+    div.textContent = `[${msg.user}] ${msg.text}`;
+
+    messagesDiv.appendChild(div);
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+});
